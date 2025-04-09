@@ -28,17 +28,31 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-3. Create a .env file:
+3. Install and configure PostgreSQL:
+- Install PostgreSQL on your system
+- Create a new database and user:
+```sql
+CREATE DATABASE taxi_bot;
+CREATE USER taxi_user WITH PASSWORD 'your_password';
+GRANT ALL PRIVILEGES ON DATABASE taxi_bot TO taxi_user;
+```
+
+4. Create a .env file:
 ```bash
 cp .env.example .env
 ```
 
-4. Edit .env and add your Telegram Bot Token:
+5. Edit .env and add your configuration:
 ```
 BOT_TOKEN=your_bot_token_here
+POSTGRES_USER=taxi_user
+POSTGRES_PASSWORD=your_password
+POSTGRES_DB=taxi_bot
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
 ```
 
-5. Initialize the database:
+6. Initialize the database:
 ```bash
 alembic upgrade head
 ```

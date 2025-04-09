@@ -5,13 +5,31 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///taxi_bot.db")
-if DATABASE_URL.startswith("sqlite"):
-    DATABASE_URL = DATABASE_URL.replace("sqlite:", "sqlite+aiosqlite:", 1)
+# Construct PostgreSQL URL from environment variables
+DATABASE_URL = os.getenv("DATABASE_URL", (
+    f"postgresql+asyncpg://"
+    f"{os.getenv('POSTGRES_USER', 'postgres')}:"
+    f"{os.getenv('POSTGRES_PASSWORD', 'postgres')}@"
+    f"{os.getenv('POSTGRES_HOST', 'localhost')}:"
+    f"{os.getenv('POSTGRES_PORT', '5432')}/"
+    f"{os.getenv('POSTGRES_DB', 'taxi_bot')}"
+))
 
-engine = create_async_engine(DATABASE_URL, echo=True)
+# Create async engine
+engine = create_async_engine(
+    DATABASE_URL,
+    echo=True,
+    pool_size=5,
+    max_overflow=10,
+    pool_timeout=30,
+    pool_recycle=1800
+)
+
+# Create session factory
 AsyncSessionLocal = sessionmaker(
-    engine, class_=AsyncSession, expire_on_commit=False
+    engine,
+    class_=AsyncSession,
+    expire_on_commit=False
 )
 
 async def get_session() -> AsyncSession:

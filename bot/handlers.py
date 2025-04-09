@@ -100,7 +100,10 @@ async def process_city_selection(
     
     await state.clear()
     await callback.message.edit_text(
-        f"Registration complete! Your city: {city}",
+        f"Registration complete! Your city: {city}"
+    )
+    await callback.message.answer(
+        "Welcome to the main menu!",
         reply_markup=get_main_menu_keyboard()
     )
 
