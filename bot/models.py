@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Time
+from sqlalchemy import Column, BigInteger, String, DateTime, ForeignKey, Time
 from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
@@ -7,7 +7,7 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = 'users'
     
-    id = Column(Integer, primary_key=True)
+    id = Column(BigInteger, primary_key=True)
     telegram_id = Column(Integer, unique=True, nullable=False)
     language = Column(String, nullable=False)
     country = Column(String, nullable=False)

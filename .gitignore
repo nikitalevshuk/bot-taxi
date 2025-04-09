@@ -34,3 +34,6 @@ wheels/
 # Database
 *.db
 *.sqlite3
+
+# Windsurf
+.windsurfrules
