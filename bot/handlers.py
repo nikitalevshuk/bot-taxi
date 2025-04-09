@@ -22,6 +22,10 @@ from aiogram.types import BufferedInputFile
 from .constants import SUPPORTED_LANGUAGES, POLISH_CITIES
 from .utils import parse_work_hours, calculate_non_working_hours
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 router = Router()
 
 class RegistrationStates(StatesGroup):
@@ -225,8 +229,11 @@ async def show_main_menu(message: Message, session: AsyncSession):
 
 @router.message(Command("report"))
 async def cmd_report(message: Message, session: AsyncSession):
-    admins_ids = [os.getenv("FIRST_ADMIN_USER_ID"), os.getenv("SECOND_ADMIN_USER_ID"), os.getenv("THIRD_ADMIN_USER_ID")]
-    
+    admins_ids = list(filter(None, [
+    os.getenv("FIRST_ADMIN_USER_ID"),
+    os.getenv("SECOND_ADMIN_USER_ID"),
+    os.getenv("THIRD_ADMIN_USER_ID")
+]))
     if str(message.from_user.id) not in admins_ids:
         await message.answer("This command is for admins only.")
         return
