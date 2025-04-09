@@ -16,6 +16,9 @@ from .keyboards import (
     get_city_keyboard,
     get_main_menu_keyboard
 )
+
+from .charts import generate_work_hours_histogram
+from aiogram.types import BufferedInputFile
 from .constants import SUPPORTED_LANGUAGES, POLISH_CITIES
 from .utils import parse_work_hours, calculate_non_working_hours
 
@@ -218,8 +221,7 @@ async def show_main_menu(message: Message, session: AsyncSession):
         reply_markup=get_main_menu_keyboard()
     )
 
-from .charts import generate_work_hours_histogram
-from aiogram.types import BufferedInputFile
+
 
 @router.message(Command("report"))
 async def cmd_report(message: Message, session: AsyncSession):
@@ -246,7 +248,7 @@ async def cmd_report(message: Message, session: AsyncSession):
             histogram_buf = await generate_work_hours_histogram(session, city)
             await message.answer_photo(
                 photo=BufferedInputFile(histogram_buf.read(), filename=f"{city}_report.png"),
-                caption=f"Work hours report for {city} at {datetime.now().strftime('%H:00')}",
+                caption=f"Work hours report for {city}",
             )
         except Exception as e:
             logger.error(f"Failed to generate report for {city}: {e}")

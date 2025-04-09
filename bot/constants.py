@@ -2,10 +2,6 @@ from typing import List
 
 SUPPORTED_LANGUAGES = {
     "en": "English",
-    "pl": "Polski",
-    "ru": "Русский",
-    "uk": "Українська",
-    "tr": "Türkçe"
 }
 
 POLISH_CITIES: List[str] = [
