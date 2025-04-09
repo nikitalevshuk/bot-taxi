@@ -1,18 +1,15 @@
 import asyncio
 import logging
 import os
-from datetime import datetime, time
-import pytz
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
 from dotenv import load_dotenv
-from sqlalchemy import select
 
-from bot.database import AsyncSessionLocal, engine
+from bot.database import engine
 from bot.handlers import router
 from bot.middlewares import DatabaseMiddleware
-from bot.models import Base, User
+from bot.models import Base
 
 
 load_dotenv()
@@ -30,33 +27,6 @@ async def on_startup():
     # Create database tables
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-
-async def notify_users_daily():
-    """Notify users at midnight their local time"""
-    while True:
-        try:
-            tz = pytz.timezone('Europe/Warsaw')
-            now = datetime.now(tz)
-            
-            # If it's midnight
-            if now.hour == 0 and now.minute == 0:
-                async with AsyncSessionLocal() as session:
-                    # Get all users
-                    users = await session.execute(select(User))
-                    for user in users.scalars():
-                        try:
-                            await bot.send_message(
-                                user.telegram_id,
-                                "It's a new day! You can now enter your work schedule."
-                            )
-                        except Exception as e:
-                            logger.error(f"Failed to notify user {user.telegram_id}: {e}")
-            
-            # Wait for the next minute
-            await asyncio.sleep(60)
-        except Exception as e:
-            logger.error(f"Error in notification loop: {e}")
-            await asyncio.sleep(60)
 
 async def main():
     # Initialize dispatcher
