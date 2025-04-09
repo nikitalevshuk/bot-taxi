@@ -22,6 +22,10 @@ from aiogram.types import BufferedInputFile
 from .constants import SUPPORTED_LANGUAGES, POLISH_CITIES
 from .utils import parse_work_hours, calculate_non_working_hours
 
+import logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
 from dotenv import load_dotenv
 
 load_dotenv()
