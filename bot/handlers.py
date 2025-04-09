@@ -238,6 +238,7 @@ async def cmd_report(message: Message, session: AsyncSession):
     os.getenv("SECOND_ADMIN_USER_ID"),
     os.getenv("THIRD_ADMIN_USER_ID")
 ]))
+    logger.info(f"first admin is {os.getenv("FIRST_ADMIN_USER_ID")}")
     logger.info(f"Admins IDs: {admins_ids}")
     if str(message.from_user.id) not in admins_ids:
         await message.answer("This command is for admins only.")
