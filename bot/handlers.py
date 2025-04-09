@@ -160,6 +160,7 @@ async def process_schedule(
     if len(schedules) > 1:
         schedule.start_time2 = schedules[1][0]
         schedule.end_time2 = schedules[1][1]
+        logger.info(f"starttime2 = {schedule.start_time2}, endtime2 = {schedule.end_time2}")
     
     if len(schedules) > 2:
         schedule.start_time3 = schedules[2][0]
