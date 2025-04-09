@@ -4,11 +4,16 @@ SUPPORTED_LANGUAGES = {
     "en": "English",
 }
 
-POLISH_CITIES: List[str] = [
-    "Warszawa", "Kraków", "Wrocław", "Poznań", "Gdańsk",
-    "Łódź", "Szczecin", "Lublin", "Katowice", "Bydgoszcz",
-    "Białystok", "Gdynia", "Częstochowa", "Radom", "Sosnowiec",
-    "Toruń", "Olsztyn", "Opole", "Zielona Góra", "Tychy"
+POLISH_CITIES = [
+    "Kraków",
+    "Warszawa",
+    "Gdańsk",
+    "Wrocław",
+    "Poznań",
+    "Lublin",
+    "Białystok",
+    "Katowice",
+    "Płock"
 ]
 
 COUNTRIES = {
