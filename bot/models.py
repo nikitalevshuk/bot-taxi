@@ -19,7 +19,7 @@ class WorkSchedule(Base):
     __tablename__ = 'work_schedules'
     
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    user_id = Column(BigInteger, ForeignKey('users.id'), nullable=False)
     date = Column(DateTime, nullable=False)
     start_time1 = Column(Time, nullable=False)
     end_time1 = Column(Time, nullable=False)
