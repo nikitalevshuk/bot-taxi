@@ -218,7 +218,7 @@ async def show_main_menu(message: Message, session: AsyncSession):
     )
 
 from .charts import generate_work_hours_histogram
-from aiogram.types import FSInputFile
+from aiogram.types import BufferedInputFile
 
 @router.message(Command("report"))
 async def cmd_report(message: Message, session: AsyncSession):
@@ -237,6 +237,6 @@ async def cmd_report(message: Message, session: AsyncSession):
     
     # Send report to user
     await message.answer_photo(
-        photo=FSInputFile(histogram_buf, filename=f"{user.city}_report.png"),
+        photo=BufferedInputFile(histogram_buf.read(), filename=f"{user.city}_report.png"),
         caption=f"Work hours report for {user.city} at {datetime.now().strftime('%H:00')}"
     )
