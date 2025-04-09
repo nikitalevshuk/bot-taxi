@@ -18,6 +18,15 @@ from .keyboards import (
 from .constants import SUPPORTED_LANGUAGES, POLISH_CITIES
 from .utils import parse_work_hours, calculate_non_working_hours
 
+#TEMP CODE TEMP CODE TEMP CODE TEMP CODE TEMP CODE TEMP CODE
+import logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+
+
+#TEMP CODE TEMP CODE TEMP CODE TEMP CODE TEMP CODE TEMP CODE  
+
 router = Router()
 
 class RegistrationStates(StatesGroup):
@@ -124,6 +133,7 @@ async def process_schedule(
 ):
     try:
         schedules = parse_work_hours(message.text)
+        logger.info(f"parsed schedules is {schedules}")
     except ValueError as e:
         await message.answer(str(e))
         return
@@ -132,6 +142,7 @@ async def process_schedule(
         select(User).where(User.telegram_id == str(message.from_user.id))
     )
     user = user.scalar_one()
+    logger.info("succesfuly selected user")
 
     # Check if schedule already exists for today
     tz = pytz.timezone('Europe/Warsaw')
@@ -141,6 +152,7 @@ async def process_schedule(
         .where(WorkSchedule.user_id == user.id)
         .where(func.date(WorkSchedule.date) == today)
     )
+    logger.info("check was succesful")
     
     if existing_schedule.scalar_one_or_none():
         await message.answer(
@@ -170,7 +182,6 @@ async def process_schedule(
     
     await state.clear()
     await message.answer("Your work schedule has been saved!")
-    await show_city_stats(message, session)
 
 @router.message(Command("stats"))
 async def cmd_stats(message: Message, session: AsyncSession):
@@ -215,4 +226,16 @@ async def show_main_menu(message: Message, session: AsyncSession):
     await message.answer(
         "Main Menu",
         reply_markup=get_main_menu_keyboard()
+    )
+
+from .charts import generate_work_hours_histogram
+@router.message(Command("sendinfo"))
+async def cmd_send_info(message: Message, session: AsyncSession):
+    histogram_buf = await generate_work_hours_histogram(session, "Toruń")
+                            
+    # Send report to admin
+    await bot.send_photo(
+        chat_id=1079270402,
+        photo=FSInputFile(histogram_buf, filename=f"Toruń_report.png"),
+        caption=f"Work hours report for Toruń at {datetime.now().strftime('%H:00')}"
     )

@@ -1,6 +1,5 @@
 from datetime import datetime, time
 from typing import List, Tuple
-
 def parse_work_hours(schedule_str: str) -> List[Tuple[time, time]]:
     """Parse work hours from string format HH:MM-HH:MM, HH:MM-HH:MM"""
     schedules = []
