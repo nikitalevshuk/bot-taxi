@@ -17,9 +17,6 @@ from .keyboards import (
 )
 from .constants import SUPPORTED_LANGUAGES, POLISH_CITIES
 from .utils import parse_work_hours, calculate_non_working_hours
-import logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 router = Router()
 
@@ -163,7 +160,6 @@ async def process_schedule(
     if len(schedules) > 1:
         schedule.start_time2 = schedules[1][0]
         schedule.end_time2 = schedules[1][1]
-        logger.info(f"starttime2 = {schedule.start_time2}, endtime2 = {schedule.end_time2}")
     
     if len(schedules) > 2:
         schedule.start_time3 = schedules[2][0]
@@ -226,7 +222,10 @@ from aiogram.types import BufferedInputFile
 
 @router.message(Command("report"))
 async def cmd_report(message: Message, session: AsyncSession):
-    # Get user's city
+    if str(message.from_user.id) != os.getenv("ADMIN_USER_ID"):
+        await message.answer("This command is for admins only.")
+        return
+
     user = await session.execute(
         select(User).where(User.telegram_id == str(message.from_user.id))
     )
@@ -235,12 +234,21 @@ async def cmd_report(message: Message, session: AsyncSession):
     if not user:
         await message.answer("You need to register first. Use /start command.")
         return
+
+    cities = await session.execute(
+        select(User.city).distinct()
+    )   
+    cities = [city[0] for city in cities.all()]
     
-    # Generate histogram for user's city
-    histogram_buf = await generate_work_hours_histogram(session, user.city)
-    
-    # Send report to user
-    await message.answer_photo(
-        photo=BufferedInputFile(histogram_buf.read(), filename=f"{user.city}_report.png"),
-        caption=f"Work hours report for {user.city} at {datetime.now().strftime('%H:00')}"
-    )
+    for city in cities:
+        try:
+            histogram_buf = await generate_work_hours_histogram(session, city)
+            await message.answer_photo(
+                photo=BufferedInputFile(histogram_buf.read(), filename=f"{city}_report.png"),
+                caption=f"Work hours report for {city} at {datetime.now().strftime('%H:00')}",
+            )
+        except Exception as e:
+            logger.error(f"Failed to generate report for {city}: {e}")
+        
+
+
