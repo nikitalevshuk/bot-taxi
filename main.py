@@ -28,8 +28,9 @@ bot = Bot(token=os.getenv("BOT_TOKEN"), parse_mode=ParseMode.HTML)
 ADMIN_USER_ID = os.getenv("ADMIN_USER_ID")
 
 async def on_startup():
-    # Create database tables
+    # Drop and recreate database tables
     async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
 
 async def notify_users_daily():
