@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, BigInteger, Integer,String, DateTime, ForeignKey, Time
+from sqlalchemy import VARCHAR, Column, BigInteger, Integer,String, DateTime, ForeignKey, Time
 from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
@@ -8,7 +8,7 @@ class User(Base):
     __tablename__ = 'users'
     
     id = Column(Integer, primary_key=True)
-    telegram_id = Column(BigInteger, unique=True, nullable=False)
+    telegram_id = Column(VARCHAR, unique=True, nullable=False)
     language = Column(String, nullable=False)
     country = Column(String, nullable=False)
     city = Column(String, nullable=False)
@@ -19,7 +19,7 @@ class WorkSchedule(Base):
     __tablename__ = 'work_schedules'
     
     id = Column(Integer, primary_key=True)
-    user_id = Column(BigInteger, ForeignKey('users.id'), nullable=False)
+    user_id = Column(VARCHAR, ForeignKey('users.id'), nullable=False)
     date = Column(DateTime, nullable=False)
     start_time1 = Column(Time, nullable=False)
     end_time1 = Column(Time, nullable=False)

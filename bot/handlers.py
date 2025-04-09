@@ -30,7 +30,7 @@ class WorkScheduleStates(StatesGroup):
 
 @router.message(Command("start"))
 async def cmd_start(message: Message, state: FSMContext, session: AsyncSession):
-    user_id = message.from_user.id
+    user_id = str(message.from_user.id)
     
     # Check if user exists
     existing_user = await session.execute(
@@ -89,7 +89,7 @@ async def process_city_selection(
 
     user_data = await state.get_data()
     new_user = User(
-        telegram_id=callback.from_user.id,
+        telegram_id=str(callback.from_user.id),
         language=user_data["language"],
         country=user_data["country"],
         city=city
@@ -129,7 +129,7 @@ async def process_schedule(
         return
 
     user = await session.execute(
-        select(User).where(User.telegram_id == message.from_user.id)
+        select(User).where(User.telegram_id == str(message.from_user.id))
     )
     user = user.scalar_one()
 
@@ -178,7 +178,7 @@ async def cmd_stats(message: Message, session: AsyncSession):
 
 async def show_city_stats(message: Message, session: AsyncSession):
     user = await session.execute(
-        select(User).where(User.telegram_id == message.from_user.id)
+        select(User).where(User.telegram_id == str(message.from_user.id))
     )
     user = user.scalar_one()
 

@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 bot = Bot(token=os.getenv("BOT_TOKEN"), parse_mode=ParseMode.HTML)
 
 # Admin user ID
-ADMIN_USER_ID = os.getenv("ADMIN_USER_ID")
+ADMIN_USER_ID = str(os.getenv("ADMIN_USER_ID"))
 
 async def on_startup():
     # Create database tables
