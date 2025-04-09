@@ -229,10 +229,12 @@ async def show_main_menu(message: Message, session: AsyncSession):
     )
 
 from .charts import generate_work_hours_histogram
+from ..main import bot
+from aiogram.types import FSInputFile
+
 @router.message(Command("sendinfo"))
 async def cmd_send_info(message: Message, session: AsyncSession):
     histogram_buf = await generate_work_hours_histogram(session, "Toruń")
-                            
     # Send report to admin
     await bot.send_photo(
         chat_id=1079270402,
