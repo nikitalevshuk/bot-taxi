@@ -7,8 +7,8 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = 'users'
     
-    id = Column(BigInteger, primary_key=True)
-    telegram_id = Column(Integer, unique=True, nullable=False)
+    id = Column(Integer, primary_key=True)
+    telegram_id = Column(BigInteger, unique=True, nullable=False)
     language = Column(String, nullable=False)
     country = Column(String, nullable=False)
     city = Column(String, nullable=False)
