@@ -6,15 +6,14 @@ import pytz
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
-from aiogram.types import FSInputFile
 from dotenv import load_dotenv
 from sqlalchemy import select
 
 from bot.database import AsyncSessionLocal, engine
 from bot.handlers import router
 from bot.middlewares import DatabaseMiddleware
-from bot.models import Base, User, WorkSchedule
-from bot.charts import generate_work_hours_histogram
+from bot.models import Base, User
+
 
 load_dotenv()
 

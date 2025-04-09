@@ -225,7 +225,12 @@ async def show_main_menu(message: Message, session: AsyncSession):
 
 @router.message(Command("report"))
 async def cmd_report(message: Message, session: AsyncSession):
-    if str(message.from_user.id) != os.getenv("ADMIN_USER_ID"):
+    admins_ids = []
+    admins_ids[0] = os.getenv("FIRST_ADMIN_USER_ID")
+    admins_ids[1] = os.getenv("SECOND_ADMIN_USER_ID")
+    admins_ids[2] = os.getenv("THIRD_ADMIN_USER_ID")
+    
+    if str(message.from_user.id) not in admins_ids:
         await message.answer("This command is for admins only.")
         return
 
