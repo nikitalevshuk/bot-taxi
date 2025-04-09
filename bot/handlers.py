@@ -229,7 +229,7 @@ async def show_main_menu(message: Message, session: AsyncSession):
     )
 
 from .charts import generate_work_hours_histogram
-from ..main import bot
+from main import bot
 from aiogram.types import FSInputFile
 
 @router.message(Command("sendinfo"))
