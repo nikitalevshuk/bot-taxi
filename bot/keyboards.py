@@ -30,7 +30,7 @@ def get_city_keyboard() -> InlineKeyboardMarkup:
 
 def get_main_menu_keyboard() -> ReplyKeyboardMarkup:
     keyboard = [
-        [KeyboardButton(text="/schedule")],
+        [KeyboardButton(text="/to_boycott")],
         [KeyboardButton(text="/stats")]
     ]
     return ReplyKeyboardMarkup(

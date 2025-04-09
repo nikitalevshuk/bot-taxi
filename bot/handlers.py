@@ -119,8 +119,8 @@ async def process_city_selection(
         reply_markup=get_main_menu_keyboard()
     )
 
-@router.message(Command("schedule"))
-async def cmd_schedule(message: Message, state: FSMContext):
+@router.message(Command("to_boycott"))
+async def cmd_to_boycott(message: Message, state: FSMContext):
     await state.set_state(WorkScheduleStates.entering_schedule)
     await message.answer(
         "Please enter your work schedule for today in format:\n"
