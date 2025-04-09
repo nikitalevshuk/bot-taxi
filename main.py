@@ -39,9 +39,6 @@ async def main():
     dp.message.middleware(DatabaseMiddleware())
     dp.callback_query.middleware(DatabaseMiddleware())
     
-    # Start background tasks
-    asyncio.create_task(notify_users_daily())
-    
     # Start polling
     await on_startup()
     await dp.start_polling(bot)
